@@ -32,11 +32,12 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
+          AWS_REGION: ${{secrets.AWS_REGION}}
         run:
-          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-          aws configure set region $AWS_REGION
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY_URI
+          #aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          #aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          #aws configure set region $AWS_REGION
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{secrets.ECR_REPOSITORY_URI}}
 
       - name: Build Docker image
         run: |

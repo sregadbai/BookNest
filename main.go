@@ -17,6 +17,10 @@ func loadEnv() {
 	if env == "" {
 		env = "local"
 	}
+	if os.Getenv("CI") == "true" {
+		log.Println("Running in CI/CD environment, relying on system environment variables only")
+		return
+	}
 	envFile := env + ".env"
 	err := godotenv.Load(envFile)
 	if err != nil {

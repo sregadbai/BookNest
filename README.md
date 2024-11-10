@@ -1,2 +1,2 @@
 # BookNest
-A Scalable Bookstore API with Go, MongoDB, and Kubernetes
+A Scalable Bookstore API with Go, DynamoDB, and Kubernetes

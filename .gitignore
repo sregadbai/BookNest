@@ -1,0 +1,23 @@
+# Ignore environment files
+.env
+.env.local
+.env.*
+
+# Ignore logs and temporary files
+*.log
+tmp/
+*.tmp
+
+# Ignore build directories
+dist/
+build/
+bin/
+main
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/project files
+.vscode/
+.idea/

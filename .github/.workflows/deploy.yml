@@ -3,7 +3,7 @@ name: Build, Test, and Deploy to ECR
 on:
   push:
     branches:
-      -main
+      - main
 
 jobs:
   build-and-push:

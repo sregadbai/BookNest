@@ -17,7 +17,7 @@ func loadEnv() {
 	if env == "" {
 		env = "local"
 	}
-	envFile := ".env." + env
+	envFile := env + ".env"
 	err := godotenv.Load(envFile)
 	if err != nil {
 		log.Printf("Error loading %s file, relying on system environment variables\n", envFile)

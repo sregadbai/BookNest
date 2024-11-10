@@ -4,14 +4,20 @@ on:
   push:
     branches:
       - main
+      - stg
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [stg, prod]
+      fail-fast: false
 
     env:
       AWS_REGION: ${{secrets.AWS_REGION}}
       ECR_REPOSITORY_URI: ${{secrets.ECR_REPOSITORY_URI}}
+      ENV: ${{matrix.env}}
     
     steps:
       - name: Checkout code
@@ -41,13 +47,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t booknest-app .
+          docker build --build-arg ENV=$ENV -t booknest-app:${{matrix.env}} .
       
       - name: Tag Docker image
         run: |
-          docker tag booknest-app:latest $ECR_REPOSITORY_URI:latest
+          docker tag booknest-app:${{matrix.env}} $ECR_REPOSITORY_URI:${{matrix.env}}
       
       - name: Push Docker image to ECR
         run: |
-          docker push $ECR_REPOSITORY_URI:latest
+          docker push $ECR_REPOSITORY_URI:${{matrix.env}}
     

@@ -1,0 +1,52 @@
+name: Build, Test, and Deploy to ECR
+
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      ECR_REPOSITORY_URI: ${{secrets.ECR_REPOSITORY_URI}}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.22'
+      
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Log into Amazon ECR
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_KEY}}
+        run:
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set region $AWS_REGION
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY_URI
+
+      - name: Build Docker image
+        run: |
+          docker build -t booknest-app .
+      
+      - name: Tag Docker image
+        run: |
+          docker tag booknest-app:latest $ECR_REPOSITORY_URI:latest
+      
+      - name: Push Docker image to ECR
+        run: |
+          docker push $ECR_REPOSITORY_URI:latest
+    

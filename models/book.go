@@ -1,9 +1,9 @@
 package models
 
 type Book struct {
-	ID     string `json:"id,omitempty" dynamodbav:"id,omitempty"`
-	Name   string `json:"name" dynamodbav:"name"`
-	Author string `json:"author" dynamodbav:"author"`
-	ISBN   string `json:"isbn" dynamodbav:"isbn"`
-	Genre  string `json:"genre" dynamodbav:"genre"`
+	ID     string `json:"id,omitempty" bson:"_id,omitempty"`
+	Name   string `json:"name" bson:"name"`
+	Author string `json:"author" bson:"author"`
+	ISBN   string `json:"isbn" bson:"isbn"`
+	Genre  string `json:"genre" bson:"genre"`
 }

@@ -15,10 +15,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: '1.22'
       
@@ -41,11 +41,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t booknest-app .
+          docker build -t booknest-backend .
       
       - name: Tag Docker image
         run: |
-          docker tag booknest-app:latest $ECR_REPOSITORY_URI:latest
+          docker tag booknest-backend:latest $ECR_REPOSITORY_URI:latest
       
       - name: Push Docker image to ECR
         run: |

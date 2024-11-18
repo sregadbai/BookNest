@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booknest-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booknest-backend
+  template:
+    metadata:
+      labels:
+        app: booknest-backend
+    spec:
+      containers:
+      - name: booknest-backend
+        image: 851725389090.dkr.ecr.us-west-2.amazonaws.com/booknest-backend:latest  
+        ports:
+        - containerPort: 8080
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials  # AWS credentials secret
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_REGION
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_REGION
+      imagePullSecrets:
+      - name: ecr-secret
